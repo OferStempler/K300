@@ -1,0 +1,49 @@
+logging:
+file: C:/k300/k300Spring.log
+level:
+org.hibernate.SQL: on
+il.co.boj.K300: debug
+il.co.boj.K300.services.impl.SanitizeServiceImp: trace
+
+pattern:
+console: '%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{1}:%M:%L - %m%n'
+file:    '%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{1}:%M:%L - %m%n'
+
+
+spring:
+jpa.hibernate.show_sql: false
+jpa.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring.datasource.url: jdbc:mysql://localhost:3306/k300spring?autoReconnect=true&amp;useEncoding=true&amp;characterEncoding=UTF-8
+spring.datasource.username: root
+spring.datasource.password: admin
+spring.datasource.driver-class-name: com.mysql.jdbc.Driver
+
+K300:
+maxIp: 49
+minIp: 10
+unlim: 800
+saveFilePath: C:\\uploadfile\\
+fileSize: 10000000
+sanitizeFolder: C:\\Sanitize\\
+sanitizeServer: 192.22.10.26
+wsDelay: 40000
+statusCounter: 5
+sanitizeFlag: true
+setUploadFile: http://192.22.10.18:7001/JerusalemBank/FileService/ProxyService/SetUploadFile/SetUploadFile
+allowedImageFormats: bmp, jpeg, jpg, png, tiff
+#setUploadFile: https://10.80.102.1:8012/JerusalemBank/FileService/ProxyService/SetUploadFile/SetUploadFile
+#setUploadFile: http://10.80.102.1:8001/JerusalemBank/FileService/ProxyService/SetUploadFile/SetUploadFile
+email:
+password: myPassword
+userName: userName
+host: smtp.gmail.com
+port: 587
+toAddress: your-friend-email
+subject: New email with attachments message -I have some attachments for you.
+
+enableTestEmail: 1
+saveFileTo: C:\\Sanitize\\
+
+
+jasypt.encryptor.password: master
