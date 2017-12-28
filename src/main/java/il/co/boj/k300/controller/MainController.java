@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import il.co.boj.k300.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import il.co.boj.K300.model.Response;
-import il.co.boj.K300.services.UploadFile;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -26,7 +25,7 @@ import lombok.extern.log4j.Log4j;
 public class MainController {
 
     @Autowired
-    UploadFile uploadFile;
+    UploadFileService uploadFile;
     // http://K300/FileController/test
     //---------------------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value={"/test", "/monitor"}, method={RequestMethod.GET})
