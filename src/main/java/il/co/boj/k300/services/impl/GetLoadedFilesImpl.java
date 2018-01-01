@@ -255,6 +255,7 @@ public class GetLoadedFilesImpl implements GetLoadedFiles {
 
                         if (sanitInd.equals("false")) {
                             log.debug("SANITIZE  Failed, calling ESB setUploadFile()");
+                            ////can be switched with Rest templet
                             setUploadFile(currentFileUpload, currentFileUpload.getFileContent(), description);
                         } else {
                             log.debug("SANITIZE  Succeeded, calling ESB setUploadFile()");
@@ -409,61 +410,61 @@ public class GetLoadedFilesImpl implements GetLoadedFiles {
     }
     //--------------------------------------------------------------------------------------------------------------
 
-    private void setUploadFile(FileUpload fileUpload, byte[] filebyte, String description) {
-        log.debug("GetFilesImpl.setUploadFile() - in. description:[" + description + "], File guild:[" + fileUpload.getFileGuid() + "]");
-        try {
-            String SetUploadFile = config.getSetUploadFile();
-            log.debug("URL  TO ESB SetUploadFile =  [" + SetUploadFile + "]");
-            java.net.URL endpointURL = new URL(SetUploadFile);
-            SetUploadFileSOAPStub stub = new SetUploadFileSOAPStub(endpointURL, null);
-
-            jerusalemService.ESB.com.SetUploadFile.RequestChannel requestChannel = new jerusalemService.ESB.com.SetUploadFile.RequestChannel();
-            requestChannel.setHeader(buildHeader("SetUploadFile"));
-
-            jerusalemService.ESB.com.SetUploadFile.ChannelInput channelInput = new jerusalemService.ESB.com.SetUploadFile.ChannelInput();
-            SetUploadFileType setUploadFileType = new SetUploadFileType();
-            jerusalemService.ESB.com.SetUploadFile.RequestType request = new RequestType();
-            request.setFileGuid(fileUpload.getFileGuid());
-            if (filebyte == null) {
-                request.setAttachmentFile(fileUpload.getFileContent());
-            } else {
-                request.setAttachmentFile(filebyte);
-            }
-            request.setChannelRequestName(fileUpload.getChannelRequestName());
-            request.setFileType(fileUpload.getFiletype());
-            request.setFileGuid(fileUpload.getFileGuid());
-            request.setFileUploadIP(fileUpload.getGetFileGuidIP());
-            request.setSanitizeStatus(fileUpload.getSanitizeStatus());
-            request.setSanitizeStatusDescription(description);
-            request.setExtraInfo(fileUpload.getExtraInfo());
-            setUploadFileType.setRequest(request);
-            channelInput.setSetUploadFile(setUploadFileType);
-            requestChannel.setChannel(channelInput);
-            stub.setTimeout(120000);
-
-            log.debug("GetFilesImpl.setUploadFile() - B4 SetUploadFile ESB. @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            ResponseChannel responseChannel = stub.excute(requestChannel);
-            if (
-                    responseChannel != null &&
-                            responseChannel.getHeader() != null &&
-                            responseChannel.getHeader().getResponseMessages() != null &&
-                            responseChannel.getHeader().getResponseMessages().length > 0 &&
-                            responseChannel.getHeader().getResponseMessages()[0] != null
-                    ){
-                log.debug("GetFilesImpl.setUploadFile() - ESB RESPONSE code:[" + responseChannel.getHeader().getResponseMessages()[0].getResponseCode() + "]");
-                log.debug("GetFilesImpl.setUploadFile() - ESB RESPONSE desc:[" + responseChannel.getHeader().getResponseMessages()[0].getMessageText() + "]");
-            }else{
-                log.debug("GetFilesImpl.setUploadFile() - NULL ESB RESPONSE");
-            }
-
-            log.debug("GetFilesImpl.setUploadFile() - AFTER SetUploadFile ESB @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
-            log.debug("---------------------------------------------------------------------------");
-        } catch (Throwable e1) {
-            e1.printStackTrace();
-            log.error(" Error get message:[" + e1.getMessage() + "]", e1);
-
-        }
-    }
+//    private void setUploadFile(FileUpload fileUpload, byte[] filebyte, String description) {
+//        log.debug("GetFilesImpl.setUploadFile() - in. description:[" + description + "], File guild:[" + fileUpload.getFileGuid() + "]");
+//        try {
+//            String SetUploadFile = config.getSetUploadFile();
+//            log.debug("URL  TO ESB SetUploadFile =  [" + SetUploadFile + "]");
+//            java.net.URL endpointURL = new URL(SetUploadFile);
+//            SetUploadFileSOAPStub stub = new SetUploadFileSOAPStub(endpointURL, null);
+//
+//            jerusalemService.ESB.com.SetUploadFile.RequestChannel requestChannel = new jerusalemService.ESB.com.SetUploadFile.RequestChannel();
+//            requestChannel.setHeader(buildHeader("SetUploadFile"));
+//
+//            jerusalemService.ESB.com.SetUploadFile.ChannelInput channelInput = new jerusalemService.ESB.com.SetUploadFile.ChannelInput();
+//            SetUploadFileType setUploadFileType = new SetUploadFileType();
+//            jerusalemService.ESB.com.SetUploadFile.RequestType request = new RequestType();
+//            request.setFileGuid(fileUpload.getFileGuid());
+//            if (filebyte == null) {
+//                request.setAttachmentFile(fileUpload.getFileContent());
+//            } else {
+//                request.setAttachmentFile(filebyte);
+//            }
+//            request.setChannelRequestName(fileUpload.getChannelRequestName());
+//            request.setFileType(fileUpload.getFiletype());
+//            request.setFileGuid(fileUpload.getFileGuid());
+//            request.setFileUploadIP(fileUpload.getGetFileGuidIP());
+//            request.setSanitizeStatus(fileUpload.getSanitizeStatus());
+//            request.setSanitizeStatusDescription(description);
+//            request.setExtraInfo(fileUpload.getExtraInfo());
+//            setUploadFileType.setRequest(request);
+//            channelInput.setSetUploadFile(setUploadFileType);
+//            requestChannel.setChannel(channelInput);
+//            stub.setTimeout(120000);
+//
+//            log.debug("GetFilesImpl.setUploadFile() - B4 SetUploadFile ESB. @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//            ResponseChannel responseChannel = stub.excute(requestChannel);
+//            if (
+//                    responseChannel != null &&
+//                            responseChannel.getHeader() != null &&
+//                            responseChannel.getHeader().getResponseMessages() != null &&
+//                            responseChannel.getHeader().getResponseMessages().length > 0 &&
+//                            responseChannel.getHeader().getResponseMessages()[0] != null
+//                    ){
+//                log.debug("GetFilesImpl.setUploadFile() - ESB RESPONSE code:[" + responseChannel.getHeader().getResponseMessages()[0].getResponseCode() + "]");
+//                log.debug("GetFilesImpl.setUploadFile() - ESB RESPONSE desc:[" + responseChannel.getHeader().getResponseMessages()[0].getMessageText() + "]");
+//            }else{
+//                log.debug("GetFilesImpl.setUploadFile() - NULL ESB RESPONSE");
+//            }
+//
+//            log.debug("GetFilesImpl.setUploadFile() - AFTER SetUploadFile ESB @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
+//            log.debug("---------------------------------------------------------------------------");
+//        } catch (Throwable e1) {
+//            e1.printStackTrace();
+//            log.error(" Error get message:[" + e1.getMessage() + "]", e1);
+//
+//        }
+//    }
 
     private FileUpload editExtraInfo(FileUpload currentFileUpload, String sanitizeCode, String sanitizeDescription) {
 
@@ -494,65 +495,65 @@ public class GetLoadedFilesImpl implements GetLoadedFiles {
         return currentFileUpload;
     }
 
-    protected Header buildHeader(String serviceName) {
-        Header header = new Header();
-        // ---- TimeStamp ---------
-        Timestamp ts = new Timestamp();
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String dateStr = sdf.format(d);
-        ts.setRequestTimestamp(dateStr); // Calendar.getInstance().toString());
-        ts.setRequestTimeout(new BigInteger("50"));
-        ts.setTimeZone("");
-        header.setTimestamp(ts);
-        // ---- ServiceInfo ---------
-        ServiceInfo si = new ServiceInfo();
-        si.setServiceName(serviceName);
-        si.setSubService("s");
-        si.setStep("0");
-        si.setPriority(new BigInteger("0"));
-        si.setMessageId("1");
-        si.setFrom("192.25.0.12");
-        si.setReplyTo("192.25.0.12");
-        si.setFaultTo("192.25.0.12");
-        si.setRelatedTo("192.25.0.12");
-        si.setAction("1");
-        header.setServiceInfo(si);
-        // ---- PageInfo ---------
-        PagingInfo pinf = new PagingInfo();
-        pinf.setMaxNumberOfRecords(new BigInteger("50"));
-        pinf.setLastSentRecordNumber(new BigInteger("0"));
-        header.setPagingInfo(pinf);
-        // ---- EnvironmentInfo ---------
-        UUID trxID = UUID.randomUUID();
-        EnvironmentInfo ei = new EnvironmentInfo();
-        ei.setChannelName("K300");
-        ei.setClientIP("192.168.125.1");
-        ei.setApplicationServerIP("192.168.125.1");
-        ei.setSessionId(trxID.toString().substring(0, 15));
-        ei.setCoreSessionID("");
-        ei.setTransactionId(trxID.toString().substring(0, 15));
-        ei.setLanguage("HEB");
-        ei.setVersionId("");
-        ei.setDevice("");
-        ei.setPlatform("");
-        ei.setOS("");
-        ei.setUserId("1"); // XR76581");
-        ei.setUserTypeId("1");
-        header.setEnvironmentInfo(ei);
-        // ---- UserInfo ---------
-        UserInfo ui = new UserInfo(); // "1", "1");
-        ui.setIdType("1");
-        ui.setIdNumber("066159344");
-        header.setUserInfo(ui);
-        // ---- AccountInfo ---------
-        AccountInfo ai = new AccountInfo(); // "1", "1", "1");
-        ai.setBankNumber("1");
-        ai.setBranchNumber("50"); //
-        ai.setAccountNumber("1"); // 200161870");
-        header.setAccountInfo(ai);
-        // ---- HEADER END ---------
-        return header;
-    }
+//    protected Header buildHeader(String serviceName) {
+//        Header header = new Header();
+//        // ---- TimeStamp ---------
+//        Timestamp ts = new Timestamp();
+//        Date d = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//        String dateStr = sdf.format(d);
+//        ts.setRequestTimestamp(dateStr); // Calendar.getInstance().toString());
+//        ts.setRequestTimeout(new BigInteger("50"));
+//        ts.setTimeZone("");
+//        header.setTimestamp(ts);
+//        // ---- ServiceInfo ---------
+//        ServiceInfo si = new ServiceInfo();
+//        si.setServiceName(serviceName);
+//        si.setSubService("s");
+//        si.setStep("0");
+//        si.setPriority(new BigInteger("0"));
+//        si.setMessageId("1");
+//        si.setFrom("192.25.0.12");
+//        si.setReplyTo("192.25.0.12");
+//        si.setFaultTo("192.25.0.12");
+//        si.setRelatedTo("192.25.0.12");
+//        si.setAction("1");
+//        header.setServiceInfo(si);
+//        // ---- PageInfo ---------
+//        PagingInfo pinf = new PagingInfo();
+//        pinf.setMaxNumberOfRecords(new BigInteger("50"));
+//        pinf.setLastSentRecordNumber(new BigInteger("0"));
+//        header.setPagingInfo(pinf);
+//        // ---- EnvironmentInfo ---------
+//        UUID trxID = UUID.randomUUID();
+//        EnvironmentInfo ei = new EnvironmentInfo();
+//        ei.setChannelName("K300");
+//        ei.setClientIP("192.168.125.1");
+//        ei.setApplicationServerIP("192.168.125.1");
+//        ei.setSessionId(trxID.toString().substring(0, 15));
+//        ei.setCoreSessionID("");
+//        ei.setTransactionId(trxID.toString().substring(0, 15));
+//        ei.setLanguage("HEB");
+//        ei.setVersionId("");
+//        ei.setDevice("");
+//        ei.setPlatform("");
+//        ei.setOS("");
+//        ei.setUserId("1"); // XR76581");
+//        ei.setUserTypeId("1");
+//        header.setEnvironmentInfo(ei);
+//        // ---- UserInfo ---------
+//        UserInfo ui = new UserInfo(); // "1", "1");
+//        ui.setIdType("1");
+//        ui.setIdNumber("066159344");
+//        header.setUserInfo(ui);
+//        // ---- AccountInfo ---------
+//        AccountInfo ai = new AccountInfo(); // "1", "1", "1");
+//        ai.setBankNumber("1");
+//        ai.setBranchNumber("50"); //
+//        ai.setAccountNumber("1"); // 200161870");
+//        header.setAccountInfo(ai);
+//        // ---- HEADER END ---------
+//        return header;
+//    }
 
 }
